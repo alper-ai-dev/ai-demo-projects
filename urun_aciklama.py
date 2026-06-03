@@ -1,34 +1,34 @@
-<<<<<<< HEAD
 import streamlit as st
 import requests
+import os
 
-API_KEY = "YOUR_API_KEY"
+API_KEY = os.environ.get("OPENROUTER_API_KEY")
 
-st.title("🛍️ AI Ürün Açıklama Yazıcı")
-st.write("Ürün bilgilerini gir, AI satış artıran açıklama yazsın!")
+st.title("🛍️ AI Product Description Writer")
+st.write("Enter product details and let AI write a sales-boosting description!")
 
-urun_adi = st.text_input("📦 Ürün adı:")
-kategori = st.selectbox("🏷️ Kategori:", ["Elektronik", "Giyim", "Ev & Yaşam", "Kozmetik", "Spor", "Gıda", "Diğer"])
-ozellikler = st.text_area("✨ Ürün özellikleri:", placeholder="Renk, boyut, malzeme, özellikler...")
-fiyat = st.text_input("💰 Fiyat (TL):")
-platform = st.selectbox("🛒 Platform:", ["Trendyol", "Hepsiburada", "Amazon", "Kendi Web Sitesi"])
+product_name = st.text_input("📦 Product name:")
+category = st.selectbox("🏷️ Category:", ["Electronics", "Clothing", "Home & Living", "Cosmetics", "Sports", "Food", "Other"])
+features = st.text_area("✨ Product features:", placeholder="Color, size, material, specifications...")
+price = st.text_input("💰 Price ($):")
+platform = st.selectbox("🛒 Platform:", ["Amazon", "eBay", "Shopify", "Own Website", "Other"])
 
-if st.button("✍️ Açıklama Yaz"):
-    if urun_adi:
-        with st.spinner("AI yazıyor..."):
-            prompt = f"""Sen bir e-ticaret uzmanısın. {platform} için {kategori} kategorisinde şu ürünün satış artıran açıklamasını yaz:
+if st.button("✍️ Write Description"):
+    if product_name:
+        with st.spinner("AI is writing..."):
+            prompt = f"""You are an e-commerce expert. Write a sales-boosting product description for {platform} in the {category} category:
 
-Ürün: {urun_adi}
-Özellikler: {ozellikler}
-Fiyat: {fiyat} TL
+Product: {product_name}
+Features: {features}
+Price: {price}$
 
-Şunları yaz:
-1. Dikkat çekici başlık
-2. Kısa ve etkileyici ürün açıklaması
-3. Madde madde özellikler
-4. Müşteriyi satın almaya teşvik eden kapanış cümlesi
+Include:
+1. Attention-grabbing title
+2. Short and compelling product description
+3. Bullet point features
+4. Closing sentence that encourages purchase
 
-Türkçe yaz, doğal ve akıcı ol."""
+Write naturally and persuasively."""
 
             response = requests.post(
                 url="https://openrouter.ai/api/v1/chat/completions",
@@ -38,51 +38,7 @@ Türkçe yaz, doğal ve akıcı ol."""
                     "messages": [{"role": "user", "content": prompt}]
                 }
             )
-            sonuc = response.json()
-            st.markdown(sonuc["choices"][0]["message"]["content"])
+            result = response.json()
+            st.markdown(result["choices"][0]["message"]["content"])
     else:
-=======
-import streamlit as st
-import requests
-
-API_KEY = "YOUR_API_KEY"
-
-st.title("🛍️ AI Ürün Açıklama Yazıcı")
-st.write("Ürün bilgilerini gir, AI satış artıran açıklama yazsın!")
-
-urun_adi = st.text_input("📦 Ürün adı:")
-kategori = st.selectbox("🏷️ Kategori:", ["Elektronik", "Giyim", "Ev & Yaşam", "Kozmetik", "Spor", "Gıda", "Diğer"])
-ozellikler = st.text_area("✨ Ürün özellikleri:", placeholder="Renk, boyut, malzeme, özellikler...")
-fiyat = st.text_input("💰 Fiyat (TL):")
-platform = st.selectbox("🛒 Platform:", ["Trendyol", "Hepsiburada", "Amazon", "Kendi Web Sitesi"])
-
-if st.button("✍️ Açıklama Yaz"):
-    if urun_adi:
-        with st.spinner("AI yazıyor..."):
-            prompt = f"""Sen bir e-ticaret uzmanısın. {platform} için {kategori} kategorisinde şu ürünün satış artıran açıklamasını yaz:
-
-Ürün: {urun_adi}
-Özellikler: {ozellikler}
-Fiyat: {fiyat} TL
-
-Şunları yaz:
-1. Dikkat çekici başlık
-2. Kısa ve etkileyici ürün açıklaması
-3. Madde madde özellikler
-4. Müşteriyi satın almaya teşvik eden kapanış cümlesi
-
-Türkçe yaz, doğal ve akıcı ol."""
-
-            response = requests.post(
-                url="https://openrouter.ai/api/v1/chat/completions",
-                headers={"Authorization": "Bearer " + API_KEY},
-                json={
-                    "model": "openai/gpt-4o-mini",
-                    "messages": [{"role": "user", "content": prompt}]
-                }
-            )
-            sonuc = response.json()
-            st.markdown(sonuc["choices"][0]["message"]["content"])
-    else:
->>>>>>> a9015c626a0b2211867df7ebbfd7a2d28c94a0fd
-        st.warning("Lütfen ürün adını girin!")
+        st.warning("Please enter the product name!")

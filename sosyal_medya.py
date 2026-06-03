@@ -1,84 +1,31 @@
-<<<<<<< HEAD
 import streamlit as st
 import requests
+import os
 
-API_KEY = "YOUR_API_KEY"
+API_KEY = os.environ.get("OPENROUTER_API_KEY")
 
-st.title("🤖 AI Müşteri Hizmetleri Chatbotu")
+st.title("📱 AI Social Media Content Generator")
+st.write("Enter your topic and let AI create engaging social media posts!")
 
-sirket_bilgisi = st.text_area("Şirket bilgisi girin:", 
-    value="Biz Pizza House restoranıyız. Menümüzde Margherita, Pepperoni ve Vejetaryen pizza var. Fiyatlar 150-250 TL arası. Teslimat 30-45 dakika sürer. Çalışma saatimiz 10:00-23:00.",
-    height=150)
+topic = st.text_input("📝 Topic:")
+platform = st.selectbox("📱 Platform:", ["Instagram", "Twitter/X", "LinkedIn", "Facebook", "TikTok"])
+tone = st.selectbox("🎯 Tone:", ["Professional", "Casual", "Funny", "Inspirational", "Promotional"])
+language = st.selectbox("🌍 Language:", ["English", "Turkish"])
 
-if "mesajlar" not in st.session_state:
-    st.session_state.mesajlar = []
-
-for mesaj in st.session_state.mesajlar:
-    if mesaj["rol"] == "kullanici":
-        st.chat_message("user").write(mesaj["icerik"])
+if st.button("✨ Generate Post"):
+    if topic:
+        with st.spinner("AI is creating your post..."):
+            prompt = f"You are a social media expert. Create an engaging {platform} post about '{topic}' in a {tone} tone in {language}. Include relevant hashtags and emojis."
+            
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={"Authorization": "Bearer " + API_KEY},
+                json={
+                    "model": "openai/gpt-4o-mini",
+                    "messages": [{"role": "user", "content": prompt}]
+                }
+            )
+            result = response.json()
+            st.markdown(result["choices"][0]["message"]["content"])
     else:
-        st.chat_message("assistant").write(mesaj["icerik"])
-
-soru = st.chat_input("Sorunuzu yazın...")
-
-if soru:
-    st.session_state.mesajlar.append({"rol": "kullanici", "icerik": soru})
-    st.chat_message("user").write(soru)
-    
-    with st.spinner("Yanıtlanıyor..."):
-        prompt = f"Sen bir müşteri hizmetleri asistanısın. Şirket bilgisi: {sirket_bilgisi}. Müşteri sorusu: {soru}. Kısa ve nazik cevap ver."
-        
-        response = requests.post(
-            url="https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": "Bearer " + API_KEY},
-            json={
-                "model": "openai/gpt-4o-mini",
-                "messages": [{"role": "user", "content": prompt}]
-            }
-        )
-        cevap = response.json()["choices"][0]["message"]["content"]
-    
-    st.session_state.mesajlar.append({"rol": "asistan", "icerik": cevap})
-=======
-import streamlit as st
-import requests
-
-API_KEY = "YOUR_API_KEY"
-
-st.title("🤖 AI Müşteri Hizmetleri Chatbotu")
-
-sirket_bilgisi = st.text_area("Şirket bilgisi girin:", 
-    value="Biz Pizza House restoranıyız. Menümüzde Margherita, Pepperoni ve Vejetaryen pizza var. Fiyatlar 150-250 TL arası. Teslimat 30-45 dakika sürer. Çalışma saatimiz 10:00-23:00.",
-    height=150)
-
-if "mesajlar" not in st.session_state:
-    st.session_state.mesajlar = []
-
-for mesaj in st.session_state.mesajlar:
-    if mesaj["rol"] == "kullanici":
-        st.chat_message("user").write(mesaj["icerik"])
-    else:
-        st.chat_message("assistant").write(mesaj["icerik"])
-
-soru = st.chat_input("Sorunuzu yazın...")
-
-if soru:
-    st.session_state.mesajlar.append({"rol": "kullanici", "icerik": soru})
-    st.chat_message("user").write(soru)
-    
-    with st.spinner("Yanıtlanıyor..."):
-        prompt = f"Sen bir müşteri hizmetleri asistanısın. Şirket bilgisi: {sirket_bilgisi}. Müşteri sorusu: {soru}. Kısa ve nazik cevap ver."
-        
-        response = requests.post(
-            url="https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": "Bearer " + API_KEY},
-            json={
-                "model": "openai/gpt-4o-mini",
-                "messages": [{"role": "user", "content": prompt}]
-            }
-        )
-        cevap = response.json()["choices"][0]["message"]["content"]
-    
-    st.session_state.mesajlar.append({"rol": "asistan", "icerik": cevap})
->>>>>>> a9015c626a0b2211867df7ebbfd7a2d28c94a0fd
-    st.chat_message("assistant").write(cevap)
+        st.warning("Please enter a topic!")
