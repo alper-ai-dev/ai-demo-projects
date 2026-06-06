@@ -1,24 +1,19 @@
-# 🤖 AI Destekli CV Analiz Aracı
+# AI Demo Projects
 
-GPT-4o-mini kullanarak CV'leri analiz eden Python uygulaması.
+A collection of AI-powered Python tools built for automation and data processing.
 
-## 🚀 Ne Yapıyor?
-- CV metnini analiz eder
-- Güçlü ve zayıf yönleri tespit eder
-- Uygun iş pozisyonları önerir
-- Kariyer tavsiyeleri verir
+## Projects
 
-## 🛠️ Kullanılan Teknolojiler
-- Python
-- OpenRouter API
-- GPT-4o-mini
+| Project | Description |
+|---|---|
+| pdf_rag.py | Upload a PDF and ask questions about its content using AI |
+| pdf_to_word.py | Convert PDF documents to formatted Word reports using AI |
+| csv_analyzer.py | Upload CSV files, get AI-generated analysis, charts and Excel reports |
+| sentiment_analysis.py | Analyze text sentiment and emotion detection |
+| web_scraper.py | AI-powered web scraping and content extraction tool |
 
-## 💻 Nasıl Kullanılır?
-1. Repoyu indir
-2. `pip install requests` çalıştır
-3. API key'ini gir
-4. `python cv_analiz.py` çalıştır
-5. CV metnini yapıştır, analizi al!
+## Tech Stack
+Python · Streamlit · OpenRouter API · GPT-4o-mini
 
-## 👨‍💻 Geliştirici
-Alper — AI Engineer & Developer
+## Contact
+Available for freelance AI development projects on Upwork.
